@@ -1,15 +1,12 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
+// Vite runs the website. Vitest runs the component tests using the same tools.
 export default defineConfig({
   plugins: [react()],
-
-  // Tell Vite to use the modern Sass compiler.
-  css: {
-    preprocessorOptions: {
-      scss: {
-        api: 'modern-compiler',
-      },
-    },
+  test: {
+    environment: 'jsdom', // Provide a simulated browser for component tests.
+    setupFiles: ['./src/test/setup.js'],
+    css: true,
   },
 });

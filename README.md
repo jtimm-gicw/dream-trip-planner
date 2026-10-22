@@ -1,292 +1,248 @@
-# ✈️ Dream Trip Planner — Code 401, Class 26
+# ✈️ Dream Trip Planner — Code 401 · Class 27
 
-> **React Function Components + Props + SCSS**  
-> A **web-based React/Vite app** that grows across Classes **26 → 27 → 28 → 29**.
->
-> **Today:** Two versions of one travel planner: **class components + plain CSS** first, then **function components + SCSS**. All trip content is static in Class 26. There are no forms that modify data yet.
+## React `useState` Hook — Second Demo Set
 
-## 🎯 Class 26 learning goals
+> **One web app, four React classes.** This project continues the Dream Trip Planner from **Class 26**; **Class 27** makes it interactive using `useState`. No React Native, API key, database, or backend is needed.
 
-By the end of the code-along, students should be able to:
+### 🎯 Learning goals
 
-1. Recognize the structure of a React component written as a JavaScript **class** versus a **function**.
-2. Explain **JSX**, **props**, **parent/child components**, and **one-way data flow** in familiar language.
-3. Use `.map()` and a stable `key` to display a collection of items.
-4. Explain the difference between ordinary CSS and **SCSS variables, mixins, and nesting**.
-5. Locate the single, intentionally small `useEffect` preview that updates the browser tab title; save the full effect/lifecycle lesson for **Class 28**.
+Students should be able to explain and show:
 
-**Important:** The separate Class 26 **Insertion Sort** code challenge is not a required feature of this React app. Treat sorting practice and component practice as separate exercises unless the instructor assigns an extension.
+1. **`useState`** = a React hook that lets a component remember a changing value.
+2. **Props** = information a parent passes into a child; props are not changed by the child.
+3. **Event handler** = a function that runs when someone clicks or changes an input.
+4. **Setter function** = the function from `useState` that tells React to use a new value and redraw the component.
+5. **Functional update** = `setValue(previous => ...)`, useful when the new value depends on the previous one.
+6. **Immutable update** = make a new object or array instead of changing the old one in place.
+7. **Derived value** = a value calculated from existing data (for example, number of checked boxes); it does not need separate state.
+8. **Testing** = describing a user's steps in code so we can rerun them automatically.
+
+**Not yet:** `useEffect` for loading or saving data belongs to **Class 28**; `useReducer` for coordinated itinerary updates belongs to **Class 29**. Class 26 already included one small browser-title effect *preview* — we will not expand on it today.
 
 ---
 
-## 1. What students need to install
+## 1. PREP — Before class
 
-| Tool / package | What it does | Install instructions |
-|---|---|---|
-| **Node.js** | Runs local JavaScript tooling | Have Node **20.19+** or **22.12+** (or later compatible versions) and npm installed. Check below. |
-| **npm** | Downloads project packages | Comes with most Node.js installations. |
-| **Git** | Tracks code changes | Install Git on your machine. |
-| **GitHub account** | Stores/shares your repository | Free account; repository creation is optional for running locally. |
-| `react` | Creates UI components | Installed automatically by `npm install` in this project. |
-| `react-dom` | Displays React in the browser | Installed automatically. |
-| `vite` | Starts the development server and builds the app | Installed as a development dependency. |
-| `@vitejs/plugin-react` | Supports React within Vite | Installed as a development dependency. |
-| `sass` | Compiles `.scss` styles into CSS | Installed as a development dependency. |
+### Tools students need
+
+| Tool/package | Why we need it | How to get it |
+| --- | --- | --- |
+| **Node.js** (20.19+ or 22.12+) | Runs our local React development tools | Install Node; check `node -v` |
+| **npm** | Downloads JavaScript packages | Included with Node; check `npm -v` |
+| **VS Code** | Edits files | Already used in Class 26 |
+| **Git / GitHub** | Saves the Class 27 checkpoint | Use the existing Dream Trip Planner repository |
+| **React + React DOM** | Builds and shows the interface | Already in `package.json` |
+| **Vite + React plugin** | Starts the local website | Already in `package.json` |
+| **Sass** | Builds styles from `.scss` files | Already in `package.json` |
+| **Vitest** | Runs component tests | New Class 27 **development dependency** |
+| **React Testing Library** | Lets tests click and read the interface | New Class 27 **development dependency** |
+| **user-event** | Simulates real clicks and selection | New Class 27 **development dependency** |
+| **jest-dom** | Offers readable checks like `toBeInTheDocument()` | New Class 27 **development dependency** |
+| **jsdom** | Gives tests a simulated browser | New Class 27 **development dependency** |
+
+**IMPORTANT:** Use only **one** GitHub repository across Classes 26–29. Do **not** create a new React Native or Vite project if you are using this starter. The bundled `package.json` already lists the packages.
+
+### Upgrade from Class 26
+
+**Easiest:** Extract this Class 27 ZIP into a new local folder, or copy its changed files into your existing `dream-trip-planner` repository. Make a Git commit before replacing files. The Class 26 source pages remain accessible with `?demo=class` and `?demo=functions`.
+
+Inside the Class 27 folder, run:
 
 ```bash
-node --version
-npm --version
-git --version
-```
-
-**Do not install React, Vite, or Sass globally.** They are already declared in the provided `package.json`. There is **no backend, database, API key, routing package, React Native, Expo, Axios, or CSS framework** needed for Class 26.
-
-### OPTION A — Run the provided finished project (recommended)
-
-1. Download and unzip `dream-trip-planner-class26.zip`.
-2. Open the unzipped folder in VS Code.
-3. In the VS Code terminal, from the folder that contains `package.json`, run:
-
-```bash
+node -v
+npm -v
 npm install
 npm run dev
 ```
 
-4. Open the **Local** link Vite prints (usually `http://localhost:5173/`).
-5. Compare the two versions:
+`npm install` reads `package.json` and installs everything including the new testing packages. **Do not run a second command to install React or Sass.**
 
-```text
-http://localhost:5173/?demo=class       ← class components + plain CSS
-http://localhost:5173/?demo=functions   ← function components + SCSS (default)
-```
-
-The **Compare** links at the top of the page also switch versions. They change the URL and refresh the page; this is not `useState`.
-
-**Common mistake:** `npm run dev` must be run **inside** the project folder (next to `package.json`), not in the parent folder.
-
-### OPTION B — Scaffold a fresh Vite project during the lecture
-
-If you want students to practice creating the project from scratch rather than unzipping it:
+If you are **manually updating** an existing Class 26 project rather than using the included Class 27 `package.json`, add the Class 27 test tools with:
 
 ```bash
-npm create vite@latest dream-trip-planner -- --template react
-cd dream-trip-planner
-npm install
-npm install -D sass
-npm run dev
+npm install -D vitest@^4 jsdom@^26 @testing-library/react@^16 @testing-library/user-event@^14 @testing-library/jest-dom@^6
 ```
 
-The Vite React template already includes React, React DOM, Vite and the React plugin. `npm install -D sass` adds SCSS support. To match this particular teaching demo, **copy the supplied `src/`, `index.html`, and any needed root files** into the scaffold, or use the provided completed project. You do **not** need to run Option A and Option B together.
+Then copy `vite.config.js`, `src/test/setup.js`, `src/class27/__tests__/`, and the workflow, or match their settings. Your React, Vite, and Sass packages can stay at the working versions from Class 26.
 
-> This package ships with a ready-to-run Vite configuration and a `package.json`. Option A is the shortest reproducible classroom setup.
+### Opening the pages
 
----
+Use the **Local** URL printed by Vite. It is often `http://localhost:5173` but may be `5174` or another port.
 
-## 2. Git repository setup — one repo for the entire four-class project
+| URL (replace port if necessary) | Purpose |
+| --- | --- |
+| `http://localhost:5173/?demo=class` | Class 26 — class components |
+| `http://localhost:5173/?demo=functions` | Class 26 — function components |
+| `http://localhost:5173/?demo=state-basic` | **Class 27, step 1** — isolated counter |
+| `http://localhost:5173/?demo=state-two` | **Class 27, steps 2–4A** — full interactions and **two state variables** |
+| `http://localhost:5173/?demo=state` | **Class 27, final** — full interactions and **one object state** |
 
-**Recommended repository name:** `dream-trip-planner`.
+The URL is a **teaching switch** between completed snapshots. It's not a router or a state hook. Interaction happens *inside* each displayed React component.
 
-You only need **one** project repository for Classes 26–29. Do **not** create a new repo every class. The two Class 26 demos are two views of the same Vite app, not two separate projects.
+### Git checkpoint
 
-For a new local repository, from the project folder:
+From the same local repository used for Class 26:
 
 ```bash
-git init -b main
+git status
+git switch -c 401class27
 git add .
-git commit -m "Class 26: static React components and SCSS"
+git commit -m "Class 27: add useState travel interactions and component tests"
+git push -u origin 401class27
 ```
 
-Then, on GitHub, create an **empty** public repository called `dream-trip-planner` (do **not** add an auto-generated README, since this folder already includes one). Copy the actual repository URL from GitHub and replace `YOUR-USERNAME` below:
+If you already created the branch, use `git switch 401class27` instead. Pushing requires that `origin` is already configured. A GitHub repository is not needed merely to run the app locally.
 
-```bash
-git remote add origin https://github.com/YOUR-USERNAME/dream-trip-planner.git
-git push -u origin main
-```
-
-If your organization blocks GitHub SSH traffic, the HTTPS remote above is an alternative; it may still require GitHub authentication. Avoid committing `node_modules`, `.env`, or build output: `.gitignore` excludes them.
-
-When Class 26 is finished, optionally mark a known-good checkpoint:
-
-```bash
-git tag class26-complete
-git push origin class26-complete
-```
-
-For Class 27, continue in the **same repository**. Commit each milestone so you can demonstrate how an existing application evolves. Optionally use a `class27-state` branch and merge it after reviewing the changes.
+**File names to verify:** root **`index.html`** contains real HTML, `src/main.jsx` starts React, `src/class-components/class-demo.css` contains CSS, and root `package.json` contains JSON—not a stylesheet or JSX.
 
 ---
 
-## 3. What the application displays today
+## 2. Class 27 learning path — follow these files in order
 
-- A travel planning header, a featured trip to Lisbon, and a link that scrolls to the itinerary.
-- Three destination cards rendered from a JavaScript array.
-- Three itinerary day cards with scheduled activities.
-- A **read-only** packing/travel checklist showing example completion marks.
-- Two demo URLs for comparing React class components/CSS with function components/SCSS.
+| Checkpoint | 📂 FILE TO OPEN | What students do and observe |
+| --- | --- | --- |
+| Review Class 26 | `src/function-components/App.jsx` | Props, components, `.map()`, static checklist |
+| **1 — One state value** | `src/class27/components/TripLengthCounter.jsx` | `useState(initialDays)`, plus/minus buttons; compare with a prop |
+| See checkpoint 1 | `src/class27/BasicStateDemo.jsx` | Existing static components + a single new interactive piece |
+| **2 — Parent state / child actions** | `src/class27/components/DestinationPicker.jsx` → `src/class27/StateTripPlanner.jsx` | Parent owns selected ID; child calls `onSelect` |
+| **3 — Array state** | `src/class27/components/PackingChecklist.jsx` → `src/class27/StateTripPlanner.jsx` | `onChange`, `.map()`, object spread, completed count |
+| **4A — Two separate values** | `src/class27/components/TravelerCounterTwoStates.jsx` | Compare separate `travelers` and `travelStyle` state values; reset both |
+| **4B — One state object** | `src/class27/components/TripPreferencesObject.jsx` | Keep `travelers` and `travelStyle` together; preserve fields with `...previous` |
+| **5 — Styling** | `src/styles/class27.scss` | New styles with existing Sass mixins and tokens |
+| **6 — Tests** | `src/class27/__tests__/state.test.jsx` | Test props, clicks, checkbox updates, state object |
+| CI demo | `.github/workflows/react-tests.yml` | Run tests/build on GitHub pushes and pull requests |
 
-**Not yet implemented:** adding destinations, clicking checklist tasks, saving data, changing itinerary days, API requests, or reducer actions. Those belong in Classes 27–29.
-
-## 4. Project file structure
-
-```text
-dream-trip-planner/
-├── .gitignore
-├── README.md                      ← install/run/Git instructions
-├── index.html                     ← HTML entry point
-├── package.json                   ← runtime + development packages
-├── vite.config.js                 ← React support in Vite
-├── docs/
-│   ├── CLASS_26_INSTRUCTOR_GUIDE.md
-│   ├── STUDENT_PRACTICE.md
-│   └── ROADMAP_26-29.md
-└── src/
-    ├── main.jsx                   ← class/functional demo URL switch
-    ├── data/
-    │   └── tripData.js            ← static data used by BOTH demos
-    ├── class-components/
-    │   ├── ClassTripPlanner.jsx   ← classes + this.props + componentDidMount
-    │   └── class-demo.css         ← repeated plain CSS styles
-    ├── function-components/
-    │   ├── App.jsx                ← parent component + small useEffect preview
-    │   ├── Header.jsx             ← props
-    │   ├── Hero.jsx               ← object props
-    │   ├── DestinationCard.jsx    ← reusable UI item
-    │   ├── DayPlan.jsx            ← .map(), nested list, stable keys
-    │   └── Checklist.jsx          ← static list and derived count
-    └── styles/
-        ├── base.css               ← CSS shared by both versions
-        ├── _tokens.scss           ← SCSS variables
-        ├── _mixins.scss           ← SCSS mixins
-        └── main.scss              ← SCSS nesting and @include
-```
+**⏱️ Live walkthrough:** `docs/CLASS_27_INSTRUCTOR_GUIDE.md` (45 minutes with your instructor tags). Practice exercises: `docs/CLASS_27_STUDENT_PRACTICE.md`.
 
 ---
 
-## 5. How Class 26 React pieces connect
+## 3. Core ideas with tiny code examples
 
-```text
-src/data/tripData.js
-      │  plain objects and arrays
-      ▼
-src/function-components/App.jsx (PARENT)
-      │
-      ├── <Header version="functions" />
-      ├── <Hero trip={trip} />
-      ├── destinations.map(...) ──► <DestinationCard destination={...} />
-      ├── itinerary.map(...) ────► <DayPlan day={...} />
-      └── <Checklist items={checklist} />
-
-      Parent sends props DOWN to children.
-      Children READ and DISPLAY those props.
-      No state setter, reducer, or data modification yet.
-```
-
-### A small code example to point at
+### A. Simple state
 
 ```jsx
-function DestinationCard({ destination }) {
-  return <h3>{destination.city}</h3>;
-}
+const [days, setDays] = useState(initialDays);
 
-// Parent uses .map() and a stable key from the data.
-{destinations.map((destination) => (
-  <DestinationCard key={destination.id} destination={destination} />
-))}
+// Correct: ask React to use a new value.
+setDays((previousDays) => previousDays + 1);
+
+// Incorrect: assigning to days does not tell React to update.
+// days = days + 1;
 ```
 
-- **Component:** A reusable piece of the screen.
-- **JSX:** HTML-like syntax inside JavaScript. It describes what React displays.
-- **Props:** Information a parent passes to a child. Treat props as read-only.
-- **Key:** A stable identifier React uses when rendering multiple siblings in a list.
-- **SCSS:** A styling language that compiles into CSS. The browser still reads CSS, not SCSS directly.
-
-### Why is there a `useEffect` in Class 26?
-
-The facilitator notes suggest a tiny hook that changes the **browser title bar**. It is included **only in `function-components/App.jsx`**:
+### B. Parent → child and child → parent
 
 ```jsx
-useEffect(() => {
-  document.title = 'Dream Trip | Function Components';
-}, []);
+// Parent owns selectedId state:
+<DestinationPicker selectedId={selectedId} onSelect={setSelectedId} />
+
+// Child asks the parent to change it:
+<button onClick={() => onSelect(place.id)}>Choose</button>
 ```
 
-This is a **preview** of a hook students encountered before. Do not expand into effect dependencies, lifecycle diagrams, timers, or cleanup until **Class 28**. In development, React Strict Mode can run effect setup more than once to help detect issues.
+### C. Changing one item in an array
+
+```jsx
+setPackingItems((previousItems) => previousItems.map((item) =>
+  item.id === id ? { ...item, done: !item.done } : item
+));
+```
+
+`.map()` creates a **new array**. `{ ...item }` creates a **new object** for the item being changed. Other items stay as they were. Don't write `item.done = true` to update React state.
+
+### D. Avoid unnecessary state
+
+```jsx
+const completed = packingItems.filter((item) => item.done).length;
+```
+
+Because `completed` can be calculated from `packingItems`, it doesn't need another state setter. React recalculates it when the component renders.
+
+### E. Two states versus one object
+
+```jsx
+// Two independent values:
+const [travelers, setTravelers] = useState(2);
+const [travelStyle, setTravelStyle] = useState('Relaxed');
+
+// One object of related preferences:
+const [preferences, setPreferences] = useState({ travelers: 2, travelStyle: 'Relaxed' });
+setPreferences((previous) => ({ ...previous, travelStyle: 'Adventure' }));
+```
+
+**Discussion:** Which version is easier to understand for the features we want? One state object can group related values, while separate state setters may be simpler for values that change independently.
+
+**Important note about updates:** State updates are queued for the next render; do not assume the state variable has already changed on the very next line of the same click handler. When the next value depends on the previous value, use the setter's function form.
 
 ---
 
-## 6. Introducing SCSS: three things to show
-
-Open `src/styles/main.scss` alongside `src/class-components/class-demo.css`.
-
-**A. Variable:** Define a color once and reuse it.
-
-```scss
-$purple: #6055cc;
-.button { color: $purple; }
-```
-
-**B. Mixin:** Reuse a collection of CSS rules.
-
-```scss
-@mixin card-surface {
-  background: white;
-  border: 1px solid #e9eaf2;
-  border-radius: 22px;
-}
-.card { @include card-surface; }
-```
-
-**C. Nesting:** Organize related selectors together.
-
-```scss
-.card {
-  h3 { font-weight: 800; }
-  &:hover { transform: translateY(-2px); }
-}
-```
-
-In our actual app, mixins and variables live in separate **partial** files and are loaded with modern Sass `@use`. `sass` is the only extra development package needed.
-
----
-
-## 7. The four-class build plan
-
-| Class | Today's focus | What changes in Dream Trip Planner? | Separate code challenge |
-|---|---|---|---|
-| **26** | Function components; class comparison; SCSS | Static travel cards, itinerary, checklist, props, `.map()` | Insertion Sort |
-| **27** | `useState` | Select a destination/day; add an activity; interact with checklist | Merge Sort |
-| **28** | `useEffect` + lifecycle | Save/load itinerary using `localStorage`; sync tab title; demonstrate effect cleanup | Quick Sort |
-| **29** | `useReducer` | Refactor related activity/checklist updates into named actions | Mock interviews: Merge Sort / Quick Sort |
-| **30** | Hash tables / behavioral interviews | **No required new React feature**; optional destination lookup extension | Hash Tables Implementation |
-
-See [docs/ROADMAP_26-29.md](docs/ROADMAP_26-29.md) for the exact files and suggested action types for future classes.
-
----
-
-## 8. Check your app / troubleshoot
+## 4. Run the React component tests
 
 ```bash
-npm run dev       # local development
-npm run build     # verifies that Vite can compile a production build
-npm run preview   # preview the built version
+npm test             # Run all tests once
+npm run test:watch   # Rerun tests while editing
+npm run build        # Check the app builds for production
 ```
 
-| Problem | Try this |
-|---|---|
-| `npm: command not found` | Install Node.js and open a new terminal. |
-| `Missing script: dev` | Run the command in the folder containing this project's `package.json`. |
-| Vite says Node is too old | Upgrade to a supported Node version (see version requirement above). |
-| SCSS import fails | In the project folder, run `npm install` or `npm install -D sass`. |
-| Blank page | Check the terminal and browser developer console for import/JSX errors. |
-| Browser says the port is busy | Use the **Local** URL printed by Vite; it may select a different port. |
-| Git push is rejected | Verify your remote and authentication; `git remote -v` shows the URL. |
+These tests use **Vitest + React Testing Library** (instead of Jest) because this is already a Vite project. Both serve the same teaching goal of checking how an app behaves. Tests simulate a visitor instead of testing React's private details.
 
-### Instructor resources
+Manual test ideas **before** looking at the test file:
 
-- [45-minute live demo script](docs/CLASS_26_INSTRUCTOR_GUIDE.md)
-- [Student practice / checkpoints](docs/STUDENT_PRACTICE.md)
-- [Classes 26–29 implementation roadmap](docs/ROADMAP_26-29.md)
+- Increase the trip from 3 to 4 days; confirm 4 appears.
+- Try to decrease a 1-day trip; the minus button should be disabled.
+- Select Kyoto; confirm the message says Kyoto, Japan.
+- Check “Pack a carry-on bag”; confirm 2 of 4 becomes 3 of 4.
+- Increase the travelers, change travel style, and confirm the traveler count stays the same.
 
-**Curriculum grounding:** Built around the provided Class 26–29 facilitator notes. The Google Classroom assignment URL supplied by the instructor requires authentication, so the **exact lab instructions could not be verified**. This lesson is aligned to the demonstrated topics in the facilitator notes rather than claiming a verbatim match to the private assignment.
+The GitHub workflow runs dependency installation, `npm test`, and `npm run build` on pushes and pull requests. It uses `npm ci` if `package-lock.json` exists, or `npm install` for a new ZIP without a lockfile. **After your first successful `npm install`, commit `package-lock.json`** so future installs use reproducible versions.
 
-**Official references:** [Vite getting started](https://vite.dev/guide/) · [Vite SCSS support](https://vite.dev/guide/features.html#css-pre-processors) · [React: Passing props](https://react.dev/learn/passing-props-to-a-component) · [React: Rendering lists](https://react.dev/learn/rendering-lists)
+---
+
+## 5. What's different from Class 26?
+
+**Class 26:** Static information flows into reusable function components as props. You can't click a checklist item to change it.
+
+**Class 27:** `useState` stores values in memory **while the current page is open**. Clicking a button calls an event handler, and the setter changes state, so React shows new information. Refreshing returns to the starting data. **Nothing is saved between visits yet.**
+
+**Class 28:** We'll use `useEffect` and lifecycle cleanup to sync the planner with browser storage, document title or other outside systems.
+
+**Class 29:** We'll move related itinerary and packing changes into a `useReducer` function with clearly named actions. The goal is to keep the same app instead of starting a new project.
+
+### 📂 Key files
+
+```text
+index.html                            HTML entry (NOT JSX)
+package.json                          Packages and scripts
+vite.config.js                        Vite + Vitest setup
+src/main.jsx                          URL demo selection
+src/function-components/             Class 26 component baseline
+src/class27/BasicStateDemo.jsx         Step 1 snapshot
+src/class27/StateTripPlanner.jsx       Interactive app and parent state
+src/class27/components/              Small Class 27 components
+src/class27/__tests__/state.test.jsx   Component tests
+src/test/setup.js                     Test matchers
+src/styles/class27.scss               Added Class 27 SCSS
+.github/workflows/react-tests.yml     GitHub test automation
+```
+
+### Quick troubleshooting
+
+- **404 or page not found:** Verify the root file is `index.html`, not `index.jsx`; check the port Vite prints.
+- **Blank page:** Open browser developer tools (Console) and terminal errors. A misspelled import is common.
+- **Can't find a package:** From the folder containing `package.json`, run `npm install`.
+- **Port already in use:** Vite may choose the next port. Use the address it prints.
+- **Tests fail due to missing simulated browser:** Make sure `jsdom` is installed and the `test` section exists in `vite.config.js`.
+- **Sass warning on an older Vite:** The included project uses Vite 7 with the modern Sass API; do not paste stylesheet code into `package.json`.
+- **Selected travel location changes but sample itinerary still says Lisbon:** This is intentional: Class 27 updates the **chosen destination banner**, while itinerary editing is reserved for Class 29.
+
+---
+
+## Reference documentation
+
+- [React: useState](https://react.dev/reference/react/useState)
+- [React: updating arrays in state](https://react.dev/learn/updating-arrays-in-state)
+- [React: updating objects in state](https://react.dev/learn/updating-objects-in-state)
+- [Vitest](https://vitest.dev/guide/)
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+
+**Class 27 focus:** Review known React ideas, experiment with state, then write tests for behaviors students can already explain verbally.

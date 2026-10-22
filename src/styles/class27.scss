@@ -1,0 +1,68 @@
+@use 'tokens' as t;
+@use 'mixins' as m;
+
+// CLASS 27: Keep styles separate from Class 26's SCSS for easier comparison.
+// The existing .function-demo styles still apply to this page.
+.state-demo {
+  .lesson-strip {
+    background: #312e68; color: white; padding: 17px 22px;
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px;
+    border-radius: 16px; margin: -23px 0 25px;
+    strong { font-size: 1.03rem; }
+  }
+  .state-layout {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px; margin: 22px 0;
+    &--lower { margin-bottom: 42px; }
+  }
+  .state-panel {
+    @include m.card-surface(24px);
+    margin: 0 0 24px;
+    .state-layout & { margin: 0; }
+    h2 { font-size: 1.5rem; margin: 8px 0 10px; }
+    p { color: t.$muted; line-height: 1.55; }
+  }
+  .state-kicker { @include m.eyebrow; }
+  .counter-row {
+    display: flex; align-items: center; gap: 18px; margin: 20px 0;
+    button {
+      font-size: 1.6rem; width: 48px; height: 48px; border: 0;
+      border-radius: 13px; background: t.$purple; color: white; cursor: pointer;
+      &:disabled { opacity: .3; cursor: not-allowed; }
+      &:focus-visible { outline: 3px solid t.$coral; outline-offset: 3px; }
+    }
+  }
+  .counter-value { font-weight: 900; min-width: 120px; font-size: 1.3rem; }
+  .helper-text { font-size: .89rem; }
+  .destination-choice-grid { display: flex; gap: 10px; flex-wrap: wrap; }
+  .destination-choice {
+    flex: 1 1 128px; display: flex; flex-direction: column; gap: 4px;
+    align-items: center; padding: 14px 10px; background: #f6f6fd;
+    color: t.$ink; border: 2px solid t.$outline; border-radius: 15px; cursor: pointer;
+    > span { font-size: 2.2rem; }
+    small { color: t.$muted; }
+    &--active { background: #e9e5ff; border-color: t.$purple; }
+    &:focus-visible { outline: 3px solid t.$coral; outline-offset: 2px; }
+  }
+  .selection-banner {
+    background: #e6f6ef; color: #145e44; padding: 18px 22px;
+    border-radius: 16px; border: 2px solid #a6dbc5;
+  }
+  .packing-progress { font-weight: 900; color: t.$purple !important; }
+  .packing-list { list-style: none; padding: 0; }
+  .packing-item { display: flex; align-items: center; gap: 12px; padding: 7px 0; cursor: pointer;
+    input { width: 22px; height: 22px; accent-color: t.$purple; }
+    &--done span { text-decoration: line-through; color: t.$muted; }
+  }
+  .reset-button {
+    border: 1px solid t.$purple; background: white; color: t.$purple;
+    border-radius: 11px; padding: 10px 16px; font-weight: 850; cursor: pointer;
+    &:focus-visible { outline: 3px solid t.$coral; outline-offset: 3px; }
+  }
+  .style-picker { display: grid; gap: 8px; font-weight: 800;
+    select { width: 100%; min-height: 43px; border: 1px solid #9a9fb8; border-radius: 10px; padding: 10px; font: inherit; background: white; }
+  }
+  @media(max-width: 780px) {
+    .state-layout { grid-template-columns: 1fr; }
+  }
+}
