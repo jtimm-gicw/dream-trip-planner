@@ -1,126 +1,186 @@
-# ✈️ Dream Trip Planner — Class 28: React Effect Hook and Lifecycle
+# ✈️ Dream Trip Planner — Class 29: React `useReducer` (Final Phase)
 
-A **React web app with Vite**. This phase builds on the Class 26 and 27 project, preserving those demos. **Class 28 adds effects and lifecycle cleanup, not a new backend or React Native app.**
+**Code 401 · Module 6 · React web application · Vite + SCSS**
 
-## PREP — packages and setup (before class)
+This is the **fourth and final React phase**, built directly on Class 28. It is a **website**, not a React Native or Expo project. The earlier demos remain available to compare how the application grows:
 
-**Use the same GitHub repository.** Create a branch such as `401class28` from your completed Class 27 branch. No new repository is necessary.
+- **Class 26:** reusable function components, props, array `.map()`, and SCSS.
+- **Class 27:** `useState` and buttons/checkboxes that change the page.
+- **Class 28:** `useEffect`, lifecycle, browser storage, and timer cleanup.
+- **Class 29:** `useReducer` for several related changes to a **Lisbon itinerary**.
+
+**Goal:** Students should be able to explain four pieces: **initial state**, **action**, **reducer function**, and **dispatch**, and see each one in a working example.
+
+> **Class 29 code challenge:** Mock interviews on merge sort and quicksort are a **separate activity**. The sorting challenges are not necessary to run Dream Trip Planner.
+
+---
+
+## PREP — before the 45-minute live demo
+
+### Required tools and packages
+
+| Tool/package | Why students need it | Install/update |
+| --- | --- | --- |
+| **Node.js + npm** | Runs local JavaScript tools and downloads packages | `node -v` and `npm -v`; use a Node version compatible with `package.json` |
+| **React + React DOM** | Builds the page; `useReducer` comes with React | Already in `package.json` |
+| **Vite + React plugin** | Starts the local website and bundles code | Already in `package.json` |
+| **Sass (`sass`)** | Turns SCSS styling into CSS for the browser | Already in `package.json` |
+| **Vitest, React Testing Library, user-event, jest-dom, jsdom** | Tests the reducer and user clicks | Already in `package.json` |
+| **Git + GitHub** | Keeps work organized in a branch and online repo | Use the **same repo**, create a Class 29 branch |
+
+**New npm packages for Class 29: NONE.** `useReducer` is a React hook, so it does not need a separate installation. No backend, database, API key, Expo, Chance.js, Redux, or React Native is required.
+
+If you are continuing from your own Class 28 repo:
 
 ```bash
-git switch 401class27
-git switch -c 401class28
+git switch 401class28
+git switch -c 401class29
 npm install
 npm run dev
 ```
 
-If your existing Class 27 branch already has the required packages, **no additional npm package is needed for Class 28**: `useEffect` is part of React, and `localStorage` and `setInterval` are built into the browser.
+If you're opening the **downloadable complete Class 29 ZIP** instead: unzip, open `dream-trip-planner-class29` in VS Code, then run **only** `npm install` followed by `npm run dev`. The application already has `package.json` and `index.html`; **do not run `npm create vite` again**. Keep the Vite terminal open and use the actual port it prints (often 5173).
 
-| Package/tool | Why it is used | Install |
-| --- | --- | --- |
-| Node.js + npm | Runs the project and package commands | Install Node.js if missing; use `node -v` |
-| React + React DOM | Components and hooks, including `useEffect` | Already in `package.json` |
-| Vite + React plugin | Runs the local development webpage | Already in `package.json` |
-| Sass | Converts SCSS styling into CSS | Already in `package.json` |
-| Vitest, Testing Library, user-event, jsdom, jest-dom | Tests component behavior | Already in `package.json` |
+> **Note about npm versions:** This project uses Vite 7 / Vitest 4 and its `package.json` specifies Node **20.19+ or 22.12+** (according to its `engines` field). On compatible Node installations, `npm install` gets the declared packages. If the project already runs, avoid unrelated major-version updates during class.
 
-If starting from scratch with **only your Class 27 source files** and a missing test setup, run `npm install` using the included `package.json`. Do not install `chance` unless your own separate lesson specifically uses it; this project does not.
+### Open each demo
 
-**Important:** Use an up-to-date Node.js version compatible with the included Vite configuration (see `engines` in `package.json`). Commit your `package-lock.json` after `npm install` so classmates can use the same package versions. `index.html` must be HTML, not JSX.
-
-## Open the demos
-
-Run `npm run dev`. Use the **actual port** Vite prints (often `5173`).
-
-| Demo | URL |
+| Class | Address (replace 5173 if Vite uses a different port) |
 | --- | --- |
-| Class 26 — class components | `http://localhost:5173/?demo=class` |
-| Class 26 — function components | `http://localhost:5173/?demo=functions` |
-| Class 27 — basic state | `http://localhost:5173/?demo=state-basic` |
-| Class 27 — two state variables | `http://localhost:5173/?demo=state-two` |
-| Class 27 — state object / default | `http://localhost:5173/?demo=state` |
-| **Class 28 — effects and lifecycle** | **`http://localhost:5173/?demo=effect`** |
+| 26 — class components | `http://localhost:5173/?demo=class` |
+| 26 — function components | `http://localhost:5173/?demo=functions` |
+| 27 — first state counter | `http://localhost:5173/?demo=state-basic` |
+| 27 — two state variables | `http://localhost:5173/?demo=state-two` |
+| 27 — interactive state | `http://localhost:5173/?demo=state` |
+| 28 — effects and lifecycle | `http://localhost:5173/?demo=effect` |
+| **29 — reducer (NEW)** | **`http://localhost:5173/?demo=reducer`** |
 
-## 📂 Class 28 files and file order
+**⚠️ IMPORTANT:** `index.html` must contain HTML (including `<div id="root"></div>`). React code belongs in `.jsx` files.
 
-The **new Class 28 demo files** are directly under `src/`, **not `src/class28/`**:
+---
+
+## 📂 What changed in Class 29?
+
+The **new Class 29 entry point is directly in `src/`** — there is no `src/class29/` folder.
 
 ```text
 src/
-├── EffectTripPlanner.jsx            NEW: effect examples; the main demo
+├── ReducerTripPlanner.jsx          NEW — Class 29 parent, useReducer and dispatch
+├── reducers/
+│   └── itineraryReducer.js        NEW — initial state + reducer actions
 ├── components/
-│   └── VisitTimer.jsx               NEW: timer and cleanup
+│   ├── ItineraryEditor.jsx        NEW — editable activities and form
+│   ├── DestinationPicker.jsx     REUSED — familiar Class 27 component
+│   ├── PackingChecklist.jsx      REUSED — familiar Class 27 component
+│   ├── TripLengthCounter.jsx     REUSED — familiar Class 27 component
+│   └── VisitTimer.jsx             REUSED — Class 28 effect cleanup
 ├── __tests__/
-│   └── effect.test.jsx              NEW: Class 28 tests
+│   ├── reducer.test.jsx           NEW — reducer logic + user interactions
+│   └── effect.test.jsx            KEPT — Class 28 tests
 ├── styles/
-│   └── class28.scss                 NEW: styles for effects panel
-├── main.jsx                         UPDATED: ?demo=effect route
-└── function-components/
-    └── Header.jsx                   UPDATED: Class 28 navigation
+│   ├── class29.scss               NEW — itinerary editor styles
+│   ├── class28.scss               KEPT
+│   └── ...                        KEPT
+├── data/tripData.js               KEPT — static sample data
+├── main.jsx                       UPDATED — ?demo=reducer
+└── function-components/Header.jsx UPDATED — adds Class 29 tab
 ```
 
-**If your local Class 27 branch was flattened** (you moved files from `src/class27/` into `src/`): adjust the imports in `src/EffectTripPlanner.jsx` to `./components/DestinationPicker.jsx`, `./components/PackingChecklist.jsx`, and `./components/TripLengthCounter.jsx`. The download retains the original Class 27 files in `src/class27/` **to keep the existing demos working**. Only the new Class 28 code uses the paths shown above.
+The full project ZIP also includes the **original Class 27 demo files** under `src/class27/` so those old URLs still work. **The Class 29 demo itself imports reusable components from `src/components/`**, never from `src/class29/` or `src/class27/`.
 
-## 🎯 Today's goal
+**For instructors using the flattened branch structure (no `src/class27/`):** Rather than replacing your working `src/main.jsx` with the full ZIP's version, follow **`docs/BRANCH_INTEGRATION.md`** to add the new Class 29 route and styles to your existing file. The Class 29 source imports are flat and already compatible with the `src/components/` layout.
 
-Use effects **only when React must work with something outside the component display**. Students have already learned `useState` and props. We add these examples one at a time:
+---
 
-1. **Mount / unmount:** an effect with an empty dependency array, and logs in the browser console.
-2. **Dependency changes:** change a destination and update the browser tab title.
-3. **Browser storage:** store selected destination and packing checklist when they change; restore those choices after reloading.
-4. **Cleanup:** show a timer and hide it; demonstrate that React stops the interval.
-5. **Testing:** verify changing the title, saving, restoring, and mounting/unmounting.
+## 🧭 Four pieces of `useReducer` (plain English)
 
-**Student-friendly definitions:**
+1. **Initial state:** What the itinerary looks like when the app begins — three sample days and their activities.
+2. **Action:** A small message saying what the user wants, such as `{ type: 'RESET_ITINERARY' }`.
+3. **Reducer function:** A function that receives the old state and action and **returns the next state**.
+4. **Dispatch:** The function that sends an action to the reducer.
 
-- **Effect:** code that connects React to something outside the displayed JSX, like browser storage or a timer.
-- **Mount:** a component appears on the webpage.
-- **Unmount:** a component leaves the webpage.
-- **Dependency:** a value an effect watches for changes.
-- **Cleanup:** instructions to stop or undo an effect when it is no longer needed.
-- **localStorage:** small saved browser data that can remain after refreshing a page.
+**Flow:** Visitor clicks a button → the component calls `dispatch(action)` → `itineraryReducer(state, action)` calculates a new itinerary → React displays it.
 
-## ⏱️ Instructor 45-minute plan
+The actions taught today are:
 
-| Time | STEP | 📂 File |
+| Action | What happens in the app |
+| --- | --- |
+| `ADD_ACTIVITY` | Add a new named activity to a selected day |
+| `REMOVE_ACTIVITY` | Remove a particular activity |
+| `MOVE_ACTIVITY` | Move an activity from one day to a different day |
+| `RESET_ITINERARY` | Restore the three original sample days |
+
+Example of a message sent by the parent:
+
+```jsx
+dispatch({
+  type: 'ADD_ACTIVITY',
+  payload: { dayId: 'day-1', title: 'Visit the market', time: '2 PM' },
+});
+```
+
+> **Critical rule:** Reducers must not directly change the previous state. Use `.map()`, `.filter()`, `{ ...object }`, or `[...array]` to create new arrays/objects. The code in `src/reducers/itineraryReducer.js` demonstrates each step.
+
+### Why not only `useState`?
+
+`useState` still handles small, independent values like the destination selector and form inputs. The **itinerary has several kinds of related updates** (add, remove, move, reset); `useReducer` gives them one organized place. Students already know state and will be comparing approaches, not learning React from scratch.
+
+---
+
+## ⏱️ 45-minute live-demo sequence
+
+| Time | Step | 📂 File |
 | --- | --- | --- |
-| 0–5 min | 1. Review state + run Class 28 | `src/main.jsx` |
-| 5–11 min | 2. Mount and unmount | `src/EffectTripPlanner.jsx` |
-| 11–19 min | 3. Dependency-based browser title | `src/EffectTripPlanner.jsx` |
-| 19–29 min | 4. Save and restore with localStorage | `src/EffectTripPlanner.jsx` |
-| 29–39 min | 5. Timer and cleanup | `src/components/VisitTimer.jsx` |
-| 39–44 min | 6. Run tests and inspect browser | `src/__tests__/effect.test.jsx` |
-| 44–45 min | 7. Exit check | `docs/CLASS_28_INSTRUCTOR_GUIDE.md` |
+| 0–5 min | 1. Show Class 28 → Class 29 progression | `src/ReducerTripPlanner.jsx` |
+| 5–12 min | 2. Identify initial state, action, reducer, dispatch | `src/reducers/itineraryReducer.js` |
+| 12–21 min | 3. Submit the add-activity form | `src/components/ItineraryEditor.jsx` → `src/ReducerTripPlanner.jsx` |
+| 21–29 min | 4. Remove an activity using `.filter()` | `src/reducers/itineraryReducer.js` |
+| 29–35 min | 5. Move an activity between days | `src/reducers/itineraryReducer.js` |
+| 35–41 min | 6. Reset and run tests | `src/__tests__/reducer.test.jsx` |
+| 41–45 min | 7. Questions and recap | `docs/CLASS_29_INSTRUCTOR_GUIDE.md` |
+| **TOTAL** | **45 minutes** | **PREP is separate** |
 
-All 45 minutes happen **after PREP**. Follow the teacher script in `docs/CLASS_28_INSTRUCTOR_GUIDE.md` for the exact TELL, DO, EXPLAIN and CHECK-IN prompts. For a quick live test, use `test-me.md`.
+Use `docs/CLASS_29_INSTRUCTOR_GUIDE.md` for the exact **🎯 Goal / 📢 [TELL] / 👉 DO / 💡 [EXPLAIN] / ❓ [CHECK-IN QUESTIONS]** prompts and file pointers. Use `test-me.md` for a short separate live exercise.
 
-## 👉 Run the tests
+---
+
+## ✅ Test the project
+
+**Manual testing:**
+
+1. Start Vite and open `?demo=reducer`.
+2. Add `Visit the market` at `2 PM` to **Day 1**. It should appear under Day 1.
+3. Click **Move to Day 2** next to it. It should disappear from Day 1 and appear under Day 2.
+4. Click **Remove** beside it. It should disappear from Day 2.
+5. Click **Reset sample itinerary**. The original activities should return.
+6. Choose Kyoto, update packing, then refresh. Those **Class 28** settings remain saved; the **Class 29 itinerary edits reset on refresh intentionally**.
+
+**Automated testing:**
 
 ```bash
 npm test
+npm run build
 ```
 
-Or continuously:
+`npm test` runs the original Class 27/28 tests **plus** Class 29 reducer tests. `npm run build` checks whether Vite can create the production website. `npm run test:watch` keeps tests running as files change.
 
-```bash
-npm run test:watch
-```
+**Troubleshooting:**
 
-The Class 27 test suite is preserved. If your local Class 27 branch already fixed its `getByRole('status')` ambiguity, keep your corrected test when merging this phase. The downloadable baseline also includes that fix.
+- `ReferenceError: test is not defined`: use imported `it` or import `test` from Vitest.
+- `Found multiple elements with the role status`: use a more specific accessible query or scope a query with `within()`.
+- Blank page / 404: check `index.html` exists and use the port printed by Vite.
+- Missing import: compare spelling and capitalization with the file tree above.
+- `npm install` fails: check your Node version and network, then try again; no Class 29-specific package is needed.
 
-## A few things NOT to do yet
+---
 
-- Do not add `useReducer` or action dispatching; that is **Class 29**.
-- Do not build a real API or backend for this lesson.
-- Do not copy a state value into a second state variable just to display it.
-- Do not expect the static Lisbon itinerary to change with destination selection yet; it is still a Class 26 example.
+## ⚠️ Scope boundaries for students
 
-## Save Class 28 to Git
+- **Selected destination and packing list** are Class 27/28 features; they stay functional.
+- **Itinerary editing** is limited to the original Lisbon sample plan. Selecting another city does **not** automatically create Kyoto or Reykjavík activities. That would require more sample data or a backend.
+- **Itinerary edits are intentionally temporary:** the reducer starts with the sample itinerary each page load. This keeps today's focus on actions and immutable state, not storage integration.
+- There is no backend, database, user accounts, API, or external service.
 
-```bash
-git status
-git add .
-git commit -m "Class 28: effects, localStorage, and cleanup"
-git push -u origin 401class28
-```
+**Suggested student practice:** Add a `RENAME_ACTIVITY` action, handle it in the reducer, and test it. See `docs/CLASS_29_STUDENT_PRACTICE.md`.
 
-If you already have a remote branch, simply `git push`.
+**Final instructor note:** Preserve the same GitHub repo and the Class 29 branch. When finished, the series from Class 26 through 29 can be reviewed in one web app using its demo navigation.

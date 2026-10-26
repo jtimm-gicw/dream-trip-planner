@@ -1,0 +1,53 @@
+@use 'tokens' as t;
+@use 'mixins' as m;
+
+// CLASS 29: Only itinerary editor styles are new. Old demo styles are reused.
+.reducer-demo {
+  .reducer-concepts { line-height: 1.8; padding-left: 24px; }
+  .reducer-editor {
+    margin: 24px 0 50px; padding: 25px; background: #f7f9ff;
+    border: 2px solid #b6c3ec; border-radius: 22px;
+  }
+  .reducer-editor__heading {
+    display: flex; justify-content: space-between; align-items: start;
+    flex-wrap: wrap; gap: 16px;
+    h2 { margin: 6px 0; font-size: clamp(1.5rem, 3vw, 2rem); }
+    p { margin: 8px 0; }
+  }
+  .reducer-count { font-weight: 850; color: #26466a; }
+  .reducer-form {
+    display: grid; grid-template-columns: minmax(150px, 2fr) minmax(110px, 1fr) minmax(90px, 1fr) auto;
+    align-items: end; gap: 14px; margin: 22px 0 28px; padding: 20px;
+    border-radius: 16px; background: #e8efff;
+    label { display: flex; flex-direction: column; gap: 7px; font-weight: 750; }
+    input, select { padding: 11px; border: 2px solid #869dc0; border-radius: 9px; background: white; color: #1b2432; font: inherit; min-width: 0; }
+  }
+  .reducer-form button, .reducer-reset, .reducer-activity__actions button {
+    border: 2px solid #315b93; border-radius: 10px;
+    padding: 11px 14px; background: #fff; color: #214472;
+    font: inherit; font-weight: 800; cursor: pointer;
+    &:hover { background: #e6edff; }
+    &:focus-visible { outline: 3px solid #ffb54c; outline-offset: 3px; }
+  }
+  .reducer-form button { background: #315b93; color: white; &:hover { background: #1a3c6e; } }
+  .reducer-days { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .reducer-day { @include m.card-surface(18px); min-width: 0;
+    h3 { font-size: 1.23rem; margin: 0; }
+  }
+  .reducer-day__date { color: t.$muted; margin: 6px 0 14px; }
+  .reducer-activities { list-style: none; margin: 0; padding: 0; }
+  .reducer-activities li { padding: 14px 0; border-top: 1px solid #d5ddef; }
+  .reducer-activity__info { overflow-wrap: anywhere;
+    p { margin: 4px 0 11px; color: t.$muted; font-size: .9rem; }
+  }
+  .reducer-activity__actions { display: flex; gap: 7px; flex-wrap: wrap;
+    button { font-size: .82rem; padding: 8px 10px; }
+    .reducer-remove { color: #9e2424; border-color: #bd6b6b; &:hover { background: #fff0f0; } }
+  }
+  .reducer-helper { margin: 20px 0 0; color: #4e6080; font-size: .95rem; }
+  @media (max-width: 950px) {
+    .reducer-days { grid-template-columns: 1fr; }
+    .reducer-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 600px) { .reducer-form { grid-template-columns: 1fr; } }
+}

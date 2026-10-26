@@ -1,4 +1,4 @@
-// A navigation component shared by Class 26 and Class 27.
+// A navigation component shared by Classes 26–29.
 // The version prop identifies which page is currently being shown.
 export default function Header({ version }) {
   const current = version === 'state-basic' ? 'state-basic'
@@ -17,6 +17,7 @@ export default function Header({ version }) {
           <a href="?demo=state-basic" aria-current={current === 'state-basic' ? 'page' : undefined}>Class 27 · Basic</a>
           <a href="?demo=state" aria-current={current === 'state' ? 'page' : undefined}>Class 27 · State</a>
           <a href="?demo=effect" aria-current={current === 'effect' ? 'page' : undefined}>Class 28 · Effects</a>
+          <a href="?demo=reducer" aria-current={current === 'reducer' ? 'page' : undefined}>Class 29 · Reducer</a>
         </nav>
       </div>
     </header>

@@ -1,45 +1,81 @@
-# ✅ Class 28 — TEST ME: Effects and Lifecycle (10–15 minutes)
+# ✈️ Class 29 — TEST ME! (`useReducer`)
 
-## PREP (before the demo)
+**10–15 minute live classroom test** · Uses flat `src/` paths · No `src/class29/`
 
-📂 [FILE TO OPEN] `src/main.jsx`  
-Run `npm install` if needed, then `npm run dev` and open `http://localhost:5173/?demo=effect` (use the port Vite prints).
+## PREP (before the timer)
 
-## STEP 1 — Browser tab title (⏱️ 3 minutes)
+```bash
+npm install
+npm run dev
+```
 
-📂 [FILE TO OPEN] `src/EffectTripPlanner.jsx`  
-➡️ NEXT FILE: `src/EffectTripPlanner.jsx`
+Open the **actual Vite URL** with `?demo=reducer` (often `http://localhost:5173/?demo=reducer`).
 
-👉 DO: Choose **Kyoto**. Look at the browser tab: it should say **Dream Trip | Kyoto**. Choose **Reykjavík** and check again.
+## STEP 1 — Check the starting itinerary (⏱️ 2 minutes)
 
-💡 [EXPLAIN] `useEffect` keeps the tab title matched to the selected city.
+📂 **[FILE TO OPEN]** `src/data/tripData.js`
 
-## STEP 2 — Save and refresh (⏱️ 4 minutes)
+➡️ **NEXT FILE:** `src/components/ItineraryEditor.jsx`
 
-📂 [FILE TO OPEN] `src/EffectTripPlanner.jsx`  
-➡️ NEXT FILE: `src/components/VisitTimer.jsx`
+🎯 **Goal:** Identify the sample days and starting activities.
 
-👉 DO: Select **Kyoto** and check **Pack a carry-on bag**. Refresh. Confirm Kyoto is still selected and the packing total is still updated.
+👉 **DO:** Confirm that the editor shows **3 days**. Find Day 1's **Breakfast at a café**. Refresh the page and confirm the sample still appears.
 
-⚠️ !! [IMPORTANT] The **Lisbon sample itinerary remains static**; we are testing the selection banner and packing checklist.
+📢 **[TELL]** “These sample days become the reducer's initial state.”
 
-## STEP 3 — Timer cleanup (⏱️ 3 minutes)
+## STEP 2 — Test ADD_ACTIVITY (⏱️ 3 minutes)
 
-📂 [FILE TO OPEN] `src/components/VisitTimer.jsx`  
-➡️ NEXT FILE: `src/__tests__/effect.test.jsx`
+📂 **[FILE TO OPEN]** `src/components/ItineraryEditor.jsx`
 
-👉 DO: Open Developer Tools → Console. Click **Show timer**, wait a few seconds, then **Hide timer**. Look for `TIMER: setup` and `TIMER: cleanup` messages.
+➡️ **NEXT FILE:** `src/ReducerTripPlanner.jsx`
 
-💡 [EXPLAIN] `clearInterval` stops repeating work when a component leaves the page.
+👉 **DO:** Enter **Visit the market**, **2 PM**, and **Day 1**. Click **Add activity**. Check that the new item appears on Day 1.
 
-## STEP 4 — Automated tests (⏱️ 3 minutes)
+💡 **[EXPLAIN]** `onAdd` sends form data to the parent. The parent uses `dispatch` to request the update.
 
-📂 [FILE TO OPEN] `src/__tests__/effect.test.jsx`  
-➡️ NEXT FILE: `docs/CLASS_28_INSTRUCTOR_GUIDE.md`
+❓ **[CHECK-IN QUESTIONS]** “What changed on the page?” **Answer:** A new activity was added to the itinerary.
 
-👉 DO: Run `npm test`. Identify tests for changing browser title, saving, restoring, and toggling the timer. The older Class 27 tests should still run.
+## STEP 3 — Test MOVE and REMOVE (⏱️ 4 minutes)
 
-## ⏱️ MUST SHOW / CAN SKIP
+📂 **[FILE TO OPEN]** `src/reducers/itineraryReducer.js`
 
-**MUST SHOW:** change a city, refresh saved choices, show/hide timer.  
-**CAN SKIP:** inspecting storage in Developer Tools, explaining Strict Mode logs in depth.
+➡️ **NEXT FILE:** `src/reducers/itineraryReducer.js` (reset action)
+
+👉 **DO:**
+1. Find **Visit the market** on Day 1. Click **Move to Day 2**.
+2. Confirm it moved to Day 2 and no longer appears in Day 1.
+3. Click **Remove** next to **Visit the market** on Day 2.
+4. Confirm it disappears.
+
+💡 **[EXPLAIN]** `MOVE_ACTIVITY` changes two day lists together; `REMOVE_ACTIVITY` uses `.filter()`.
+
+## STEP 4 — Test RESET_ITINERARY (⏱️ 2 minutes)
+
+📂 **[FILE TO OPEN]** `src/reducers/itineraryReducer.js`
+
+➡️ **NEXT FILE:** `src/__tests__/reducer.test.jsx`
+
+👉 **DO:** Click **Reset sample itinerary**. Confirm **Breakfast at a café** is on Day 1 and the custom activity is gone.
+
+⚠️ **!! [IMPORTANT]** Resetting the itinerary does not reset the Class 28 destination or packing choices. Those features still use their own state.
+
+## STEP 5 — Run automated tests (⏱️ 3 minutes)
+
+📂 **[FILE TO OPEN]** `src/__tests__/reducer.test.jsx`
+
+➡️ **NEXT FILE:** `docs/CLASS_29_STUDENT_PRACTICE.md`
+
+👉 **DO:** Run:
+
+```bash
+npm test
+npm run build
+```
+
+Expected result: all Class 27, 28, and 29 tests pass and Vite builds the webpage. If they fail, read the first error and check imports, action names, and missing packages.
+
+## ⏱️ MUST SHOW vs CAN SKIP
+
+**⭐ MUST SHOW:** add → move → remove → reset, and how those changes relate to reducer actions.
+
+**⏭️ CAN SKIP OR SHORTEN:** the refresh check and full test-suite explanation. Ask students to run `npm test` after class if time runs short.
