@@ -1,0 +1,10 @@
+// CLASS 28: A few new styles; existing Class 26/27 SCSS remains unchanged.
+.effect-demo {
+  .effect-panel { margin: 26px 0; padding: 24px; background: #edf8ff; border: 2px solid #a7d6f2; border-radius: 22px; }
+  .effect-panel h2 { margin-top: 0; }
+  .effect-actions { display: flex; gap: 12px; flex-wrap: wrap; margin: 18px 0; }
+  .effect-actions button { padding: 12px 18px; cursor: pointer; border-radius: 12px; border: 2px solid #315f89; background: white; color: #163d63; font-weight: 750; }
+  .effect-actions button:hover { background: #d9eeff; }
+  .effect-timer { background: white; border-left: 6px solid #2373a7; border-radius: 12px; padding: 15px 18px; }
+  .effect-timer output { display: block; font-size: 1.55rem; font-weight: 800; margin-top: 8px; }
+}

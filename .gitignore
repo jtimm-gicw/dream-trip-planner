@@ -1,0 +1,8 @@
+# Install packages using npm install. Do not commit them.
+node_modules/
+# Vite generates this folder when building for production.
+dist/
+.env
+.env.local
+.DS_Store
+npm-debug.log*
