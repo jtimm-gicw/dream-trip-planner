@@ -1,0 +1,51 @@
+/* CLASS DEMO: plain CSS on purpose.
+   Ask: how many times do we repeat a radius, color, or shadow?
+   In the second demo, SCSS variables, a mixin, and nesting improve reuse.
+   All selectors start with .class-demo so both demos can share one project. */
+.class-demo { background: #f6f7fa; min-height: 100vh; padding-bottom: 28px; }
+.class-header { background: white; border-bottom: 1px solid #e5e8ef; }
+.class-header__row { min-height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.class-logo { text-decoration: none; font-size: 1.4rem; font-weight: 850; color: #252b50; }
+.class-demo-switcher { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: .9rem; }
+.class-demo-switcher span { color: #67728b; margin-right: 8px; }
+.class-demo-switcher a { text-decoration: none; padding: 8px 14px; background: #f1f4f9; border-radius: 12px; }
+.class-demo-switcher a[aria-current='page'] { background: #253b66; color: white; }
+.class-hero { margin: 36px 0 56px; padding: 50px 55px; color: white; border-radius: 28px; background: linear-gradient(115deg, #244276, #4d74c7); box-shadow: 0 18px 45px #253b6630; }
+.class-hero h1 { max-width: 660px; font-size: clamp(2.1rem, 4vw, 3.5rem); letter-spacing: -.04em; line-height: 1.1; margin: 12px 0; }
+.class-hero p { line-height: 1.7; max-width: 720px; }
+.class-hero a { display: inline-block; margin-top: 12px; padding: 12px 20px; border-radius: 14px; background: white; color: #203e72; font-weight: 750; text-decoration: none; }
+.class-eyebrow { letter-spacing: .16em; text-transform: uppercase; font-size: .75rem; font-weight: 800; color: #d9e5ff; }
+.class-section { margin-bottom: 50px; }
+.class-section h2 { font-size: clamp(1.6rem, 3vw, 2.1rem); margin: 0 0 8px; letter-spacing: -.03em; }
+.class-section > p { color: #69758a; margin-bottom: 26px; }
+.class-card-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.class-card { background: white; border: 1px solid #e9ecf3; border-radius: 20px; padding: 20px; box-shadow: 0 10px 28px #2731500b; }
+.class-card__art { display: grid; place-items: center; height: 144px; border-radius: 14px; font-size: 4rem; }
+.class-card__art--sunset { background: linear-gradient(130deg, #ffd3a9, #f49d8a); }
+.class-card__art--blossom { background: linear-gradient(130deg, #f4c8e8, #d7b5f5); }
+.class-card__art--glacier { background: linear-gradient(130deg, #c4e9ff, #9ccccc); }
+.class-card h3 { font-size: 1.2rem; margin: 19px 0 8px; }
+.class-card p { color: #657186; line-height: 1.6; min-height: 52px; }
+.class-card small { color: #47649e; font-weight: 700; }
+.class-plan-grid { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(250px, 1fr); gap: 22px; align-items: start; }
+.class-day-grid { display: grid; gap: 15px; }
+.class-day-card { background: white; border: 1px solid #e9ecf3; border-radius: 20px; padding: 24px; box-shadow: 0 10px 28px #2731500b; }
+.class-day-card h3 { margin: 0; font-size: 1.23rem; }
+.class-day-date { color: #63728b; margin: 8px 0 16px; }
+.class-day-card ol { margin: 0; padding-left: 22px; }
+.class-day-card li { padding: 7px 0; }
+.class-day-card li p { margin: 4px 0 0; color: #6f7a8f; }
+.class-checklist { background: white; border: 1px solid #e9ecf3; border-radius: 20px; padding: 24px; box-shadow: 0 10px 28px #2731500b; }
+.class-checklist h2 { font-size: 1.25rem; }
+.class-checklist ul { list-style: none; padding: 0; display: grid; gap: 14px; }
+.class-checklist p { font-size: .9rem; line-height: 1.5; color: #657186; }
+.class-footer { border-top: 1px solid #e4e8f0; padding-top: 24px; color: #728098; font-size: .85rem; }
+@media (max-width: 870px) {
+  .class-card-grid { grid-template-columns: 1fr 1fr; }
+  .class-plan-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .class-hero { padding: 30px 22px; }
+  .class-card-grid { grid-template-columns: 1fr; }
+  .class-header__row { flex-direction: column; padding-top: 16px; padding-bottom: 16px; }
+}

@@ -1,0 +1,20 @@
+@use 'tokens' as t;
+
+// SCSS FEATURE #2: reusable MIXIN.
+// A mixin bundles multiple style rules. @include reuses those rules.
+// Compare these with the repeated card rules in class-demo.css.
+@mixin card-surface($padding: 22px) {
+  background: t.$paper;
+  border: 1px solid t.$outline;
+  border-radius: t.$radius-card;
+  padding: $padding;
+  box-shadow: t.$shadow-card;
+}
+
+@mixin eyebrow {
+  color: t.$purple;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 0.74rem;
+  font-weight: 850;
+}
