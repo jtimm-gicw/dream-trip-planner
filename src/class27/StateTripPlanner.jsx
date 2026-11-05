@@ -31,12 +31,12 @@ import { useState } from 'react';
 // ======================================================
 
 // We reuse the Header, Hero, and DayPlan components from Class 26.
-import Header from './function-components/Header.jsx';
-import Hero from './function-components/Hero.jsx';
-import DayPlan from './function-components/DayPlan.jsx';
+import Header from '../function-components/Header.jsx';
+import Hero from '../function-components/Hero.jsx';
+import DayPlan from '../function-components/DayPlan.jsx';
 
 // Our data file holds the sample trip, destinations, and packing items.
-import { trip, destinations, itinerary, checklist } from './data/tripData.js';
+import { trip, destinations, itinerary, checklist } from '../data/tripData.js';
 
 // These Class 27 components add interactive controls to the page.
 import TripLengthCounter from './components/TripLengthCounter.jsx';
