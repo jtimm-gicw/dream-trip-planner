@@ -38,5 +38,35 @@ describe('Class 28: effects and lifecycle', () => {
     expect(screen.getByRole('group', { name: 'Planning session timer' })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Hide timer' }));
     expect(screen.queryByRole('group', { name: 'Planning session timer' })).not.toBeInTheDocument();
+
+    it('cleans up the timer when the component is removed', async () => {
+  const user = userEvent.setup();
+
+  // Watch the browser function used to stop timers.
+  const clearIntervalSpy = vi.spyOn(window, 'clearInterval');
+
+  // Display the Class 28 component.
+  render(<EffectTripPlanner />);
+
+  // Click Show Timer to create the timer component.
+  await user.click(
+    screen.getByRole('button', { name: 'Show timer' })
+  );
+
+  // Confirm the timer appears.
+  expect(
+    screen.getByRole('group', {
+      name: 'Planning session timer',
+    })
+  ).toBeInTheDocument();
+
+  // Click Hide Timer to remove the component.
+  await user.click(
+    screen.getByRole('button', { name: 'Hide timer' })
+  );
+
+  // Check that cleanup called clearInterval.
+  expect(clearIntervalSpy).toHaveBeenCalled();
+});
   });
 });
